@@ -1,0 +1,9 @@
+= Mixxx MIDI Engine Emulator =
+
+Emulate the Mixxx MIDI Scripting Engine. Useful for quickly testing out
+things.
+
+Requirements:
+
+  * xml2js
+  * node-midi

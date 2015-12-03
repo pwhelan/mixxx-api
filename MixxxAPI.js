@@ -1,13 +1,20 @@
-function MixxxEngineCall(group, control, value)
+if (typeof exports != 'undefined')
+{
+	var engine = require('./test/engine');
+	var midi = require('./test/midi-noop');
+}
+
+function MixxxEngineCall(group, control, value, noget)
 {
 	if ( typeof value != 'undefined' )
-		print("[S] " + group + "::" + control + "="  + value);
-	else
-		print("[G] " + group + "::" + control);
-	
-	
-	if ( typeof value != 'undefined' )
+	{
 		engine.setValue(group, control, value);
+	}
+	
+	if (typeof noget != 'undefined' && noget)
+	{
+		return;
+	}
 	
 	return engine.getValue(group, control);
 }

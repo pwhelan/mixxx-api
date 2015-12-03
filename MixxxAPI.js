@@ -94,15 +94,13 @@ function Hotcue(deck, number)
 
 function MIDI()
 {
-	
-	
-	this.SendShortMsg = function(control,status,value)
+	this.Send = function(control,status,value)
 	{
 		midi.sendShortMsg(control,status,value);
 		return this;
-	}
+	};
 	
-	this.SendSysexMsg = function(len, data)
+	this.SendSysex = function(len, data)
 	{
 		if ( typeof data == 'undefined' )
 		{
@@ -112,8 +110,7 @@ function MIDI()
 		
 		midi.sendSysexMsg(data, len);
 		return this;
-	}
-		
+	};	
 }
 
 function Equalizer(deck)

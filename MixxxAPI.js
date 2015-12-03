@@ -113,46 +113,60 @@ function MIDI()
 	};	
 }
 
-function Equalizer(deck)
+function Filter(deck, level)
 {
 	this.deck = deck;
+	this.level = level;
 	
-	
-	this.__engineCall = function(control, value)
+	this.Set = function(value)
 	{
-		return this.deck.__engineCall(control, value);
-	}
+		this.deck.__engineCall('filter' + this.level, value, true);
+	};
 	
-	this.Low = function(value)
+	this.Get = function(value)
 	{
-		return this.__engineCall('filterLow', value);
-	}
+		return this.deck.__engineCall('filter' + this.level);
+	};
 	
-	this.LowKill = function(value)
+	this.Kill = function(value)
 	{
-		return this.__engineCall('filterLowKill', value);
-	}
+		this.deck.__engineCall('filter' + this.level + 'Kill', 1);
+	};
 	
-	this.Mid = function(value)
+	this.Killed = function(value)
 	{
-		return this.__engineCall('filterMid', value);
-	}
+		return this.deck.__engineCall('filter' + this.level + 'Kill');
+	};
+}
+
+function Equalizer(deck)
+{
+	this.filters = {
+		low: new Filter(deck, 'Low'),
+		mid: new Filter(deck, 'Mid'),
+		hi: new Filter(deck, 'High')
+	};
 	
-	this.MidKill = function(value)
+	this.Low = function()
 	{
-		return this.__engineCall('filterMidKill', value);
-	}
+		return this.filters.low;
+	};
 	
-	this.High = function(value)
+	this.Mid = function()
 	{
-		return this.__engineCall('filterHigh', value);
-	}
+		return this.filters.mid;
+	};
 	
-	this.HighKill = function(value)
+	this.High = function()
 	{
-		return this.__engineCall('filterHighKill', value);
-	}
+		return this.filters.hi;
+	};
 	
+	// A simple Alias
+	this.Hi = function()
+	{
+		return this.filter.hi;
+	};
 }
 
 function Rate(deck)
@@ -221,6 +235,7 @@ function Deck(decknum)
 	this.deck = decknum;
 	this.group = '[Channel' + this.decknum + ']';
 	this.hotcues = [];
+	this.eq = new Equalizer(this);
 	
 	
 	for (var i = 0; i < 32; i++)
@@ -278,8 +293,8 @@ function Deck(decknum)
 	
 	this.EQ = function()
 	{
-		return new Equalizer(this);
-	}
+		return this.eq;
+	};
 	
 	this.Rate = function()
 	{

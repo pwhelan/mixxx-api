@@ -176,43 +176,43 @@ function Rate(deck)
 	this.__engineCall = function(control, value)
 	{
 		return this.deck.__engineCall(control, value);
-	}
+	};
 	
 	this.PermUp = function()
 	{
 		this.__engineCall('rate_perm_up', 1);
 		return this;
-	}
+	};
 	
 	this.PermDown = function()
 	{
 		this.__engineCall('rate_perm_down', 1);
 		return this;
-	}
+	};
 	
 	this.PermUpSmall = function()
 	{
 		this.__engineCall('rate_perm_up_small', 1);
 		return this;
-	}
+	};
 	
 	this.PermDownSmall = function()
 	{
 		this.__engineCall('rate_perm_down_small', 1);
 		return this;
-	}
+	};
 	
 	this.TempUp = function()
 	{
 		this.__engineCall('rate_temp_up', 1);
 		return this;
-	}
+	};
 	
 	this.TempDown = function()
 	{
 		this.__engineCall('rate_temp_down', 1);
 		return this;
-	}
+	};
 	
 	this.ShiftUp = function(value)
 	{
@@ -223,14 +223,15 @@ function Rate(deck)
 	this.ShiftDown = function(value)
 	{
 		return this.ShiftUp(-value);
-	}
+	};
 	
 }
+
 
 function Deck(decknum)
 {
 	this.deck = decknum;
-	this.group = '[Channel' + this.decknum + ']';
+	this.group = '[Channel' + this.deck + ']';
 	this.hotcues = [];
 	this.eq = new Equalizer(this);
 	this.rate = new Rate(this);
@@ -243,51 +244,48 @@ function Deck(decknum)
 	
 	this.__engineCall = function(control, value)
 	{
-		if ( typeof this.decknum == 'undefined' || !this.decknum )
-			return;
-		
-		MixxxEngineCall(this.group, control, value);
-	}	
+		return MixxxEngineCall(this.group, control, value);
+	};
 	
 	this.Cue = function(value)
 	{
 		return this.__engineCall('cue_default', value);
-	}
+	};
 	
 	this.Bpm = function(value)
 	{
 		return this.__engineCall('bpm', value);
-	}
+	};
 	
 	this.Beatsync = function(value)
 	{
 		return this.__engineCall('beatsync', value);
-	}
+	};
 	
 	this.End = function(value)
 	{
 		return this.__engineCall('end', value);
-	}
+	};
 	
 	this.Forward = function(value)
 	{
 		return this.__engineCall('fwd', value);
-	}
+	};
 	
 	this.Backward = function(value)
 	{
 		return this.__engineCall('back', value);
-	}
+	};
 
 	this.PlayPosition = function(value)
 	{
 		return this.__engineCall('playposition', value);
-	}
+	};
 	
 	this.FileBpm = function()
 	{
 		return this.__engineCall('file_bpm');
-	}
+	};
 	
 	this.EQ = function()
 	{
@@ -302,27 +300,27 @@ function Deck(decknum)
 	this.Play = function(value)
 	{
 		return this.__engineCall('play', value);
-	}
+	};
 	
 	this.Pregain = function(value)
 	{
 		return this.__engineCall('pregain', value);
-	}
+	};
 	
 	this.Duration = function()
 	{
 		return this.__engineCall('duration');
-	}
+	};
 	
 	this.Hotcue = function(number)
 	{
-		return new Hotcue(this, number);
-	}
+		return this.hotcues[number];
+	};
 	
 	this.GetNumber = function()
 	{
-		return this.decknum;
-	}
+		return this.deck;
+	};
 	
 	this.Connect = function(control, func)
 	{
@@ -348,63 +346,61 @@ function Master()
 	this.Balance = function(value)
 	{
 		return this.__engineCall('balance', value);
-	}
+	};
 	
 	this.Crossfader = function(value)
 	{
 		return this.__engineCall('crossfader', value);
-	}
+	};
 	
 	this.HeadphoneVolume = function(value)
 	{
 		return this.__engineCall('headVolume', value);
-	}
+	};
 	
 	this.HeadphoneMix = function(value)
 	{
 		return this.__engineCall('headMix', value);
-	}
+	};
 	
 	this.Latency = function()
 	{
 		return this.__engineCall('latency');
-	}
+	};
 	
 	this.Volume = function(value)
 	{
 		return this.__engineCall('volume', value);
-	}
+	};
 	
 }
 
 function Playlist()
 {
-	
-	
 	this.__engineCall = function(control, value)
 	{
 		return MixxxEngineCall('[Playlist]', control, value);
-	}
+	};
 	
 	this.Next = function()
 	{
 		return this.__engineCall('SelectNextPlaylist', 1);
-	}
+	};
 	
 	this.Prev = function()
 	{
 		return this.__engineCall('SelectPrevPlaylist', 1);
-	}
+	};
 	
 	this.NextTrack = function()
 	{
 		return this.__engineCall('SelectNextTrack', 1);
-	}
+	};
 	
 	this.PrevTrack = function()
 	{
 		return this.__engineCall('SelectPrevTrack', 1);
-	}
+	};
 	
 	this.ScrollTracks = function(value)
 	{

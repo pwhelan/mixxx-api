@@ -465,6 +465,195 @@ function Playlist()
 		return this.__engineCall('SelectTrackKnob', value);
 	};
 	
+	this.Timeout = function(timeout, fn)
+	{
+		return engine.beginTimer(timeout, fn, true);
+	};
+	
+	this.Periodic = function(period, fn)
+	{
+		return engine.beginTimer(timeout, fn, false);
+	};
+}
+
+function OnOff(__engineCall)
+{
+	this.Enable = function()
+	{
+		return __engineCall(1, true);
+	};
+	
+	this.Disable = function()
+	{
+		return __engineCall(0, true);
+	};
+	
+	this.Enabled = function()
+	{
+		return __engineCall();
+	};
+	
+	this.Toggle = function()
+	{
+		if (this.Enabled())
+		{
+			this.Disable();
+		}
+		else
+		{
+			this.Enable();
+		}
+	};
+}
+
+function Unit(rackno, unitno)
+{
+	this.rack = rackno;
+	this.unit = unitno;
+	this.decks = [];
+	var group = this.group = "[EffectRack" + rackno + "_EffectUnit"+ unitno +"]";
+	this.fader = "[EffectRack" + this.rack + "_EffectUnit" + this.unit + "_Effect1]";
+	
+	
+	var __enginecall = function(control, value)
+	{
+		return MixxxEngineCall(
+			group,
+			control,
+			value
+		);
+	};
+	
+	
+	this.master = new OnOff(function(onoff) {
+		return __enginecall(
+			"group_[Master]_enable",
+			onoff
+		);
+	});
+	
+	this.headphones = new OnOff(function(onoff) {
+		return __enginecall(
+			"group_[Headphone]_enable",
+			onoff
+		);
+	});
+	
+	
+	for (var i = 0; i < 4; i++)
+	{
+		this.decks[i] = new OnOff(function(onoff) {
+			return __enginecall(
+				"group_[Channel" + (i+1) + "]_enable",
+				onoff
+			);
+		});
+	}
+	
+	this.Enabled = function()
+	{
+		return __enginecall("enabled");
+	};
+	
+	this.Enable = function()
+	{
+		return __enginecall("enabled", 1);
+	};
+	
+	this.Disable = function()
+	{
+		return __enginecall("enabled", 0);
+	};
+	
+	this.Toggle = function()
+	{
+		if (this.Enabled())
+		{
+			this.Disable();
+		}
+		else
+		{
+			this.Enable();
+		}
+	};
+	
+	this.Deck = function(deckno)
+	{
+		return this.decks[(deckno-1)];
+	};
+	
+	this.Master = function()
+	{
+		return this.master;
+	};
+	
+	this.Headphones = function(enable)
+	{
+		return this.headphones;
+	};
+	
+	/*
+	this.Fader = function(control, value)
+	{
+		
+		if (typeof value == 'undefined')
+		{
+			return engine.getParameter(this.fader, "parameter" + (control + 1));
+		}
+	};
+	*/
+	this.Deck = function(deckno)
+	{
+		return this.decks[(deckno-1)];
+	};
+	
+	this.Master = function()
+	{
+		return this.master;
+	};
+	
+	this.Headphones = function(enable)
+	{
+		return this.headphones;
+	};
+	
+	this.Fader = function(control, value)
+	{
+		
+		if (typeof value == 'undefined')
+		{
+			return engine.getParameter(this.fader, "parameter" + (control + 1));
+		}
+		
+		engine.setParameter(this.fader, "parameter" + (control + 1), value);
+		return value;
+	};
+}
+
+function Rack(rackno)
+{
+	var _units = [
+		new Unit(rackno, 1),
+		new Unit(rackno, 2),
+		new Unit(rackno, 3),
+		new Unit(rackno, 4)
+	];
+	
+	this.Unit = function(unitno)
+	{
+		return _units[(unitno-1)];
+	};
+}
+
+function FX()
+{
+	var _racks = [new Rack(1)];
+	
+	
+	this.Rack = function(rackno)
+	{
+		return _racks[(rackno-1)];
+	};
 }
 
 /*
@@ -530,6 +719,11 @@ function MixxxAPI()
 	this.Playlist = function()
 	{
 		return _playlist;
+	};
+	
+	this.FX = function()
+	{
+		return _fx;
 	};
 	
 	this.init = function()

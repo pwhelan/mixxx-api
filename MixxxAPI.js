@@ -23,59 +23,72 @@ function Hotcue(deck, number)
 {
 	this.hotcue = number;
 	this.deck = deck;
+	this.commands = {
+		set: null,
+		activate: null,
+		clear: null,
+		enabled: null,
+		goto: null,
+		gotoandstop: null,
+		position: null
+	};
+	
+	
+	for (var cmd in this.commands)
+	{
+		this.commands[cmd] = 'hotcue_' + this.hotcue + '_' + cmd;
+	}
 	
 	
 	this.__engineCall = function(control, value)
 	{
 		return this.deck.__engineCall(control, value);
-	}
+	};
 	
 	this.__hotcueCommand = function(command, value)
 	{
-		var control = 'hotcue_' + this.hotcue + '_' + command;
-		return this.__engineCall(control, value);
-	}
-	
+		return this.__engineCall(this.commands[command], value);
+	};
 	
 	this.Activate = function()
 	{
 		this.__hotcueCommand('activate', 1);
 		return this;
-	}
+	};
 	
 	this.Clear = function()
 	{
 		this.__hotcueCommand('clear', 1);
 		return this;
-	}
+	};
 	
 	this.Enabled = function()
 	{
 		return this.__hotcueCommand('enabled');
-	}
+	};
 	
 	this.Goto = function()
 	{
 		this.__hotcueCommand('goto', 1);
 		return this;
-	}
+	};
 	
 	this.GotoAndStop = function()
 	{
 		this.__hotcueCommand('gotoandstop', 1);
 		return this;
-	}
+	};
 	
 	this.Position = function()
 	{
 		return this.__hotcueCommand('position');
-	}
+	};
 	
 	this.Set = function()
 	{
 		this.__hotcueCommand('set', 1);
 		return this;
-	}
+	};
 		
 }
 
@@ -210,7 +223,13 @@ function Deck(decknum)
 {
 	this.deck = decknum;
 	this.group = '[Channel' + this.decknum + ']';
+	this.hotcues = [];
 	
+	
+	for (var i = 0; i < 32; i++)
+	{
+		this.hotcues.push(new Hotcue(this, i));
+	}
 	
 	this.__engineCall = function(control, value)
 	{

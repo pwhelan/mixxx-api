@@ -216,12 +216,9 @@ function Rate(deck)
 	
 	this.ShiftUp = function(value)
 	{
-		var rate = this.__engineCall('rate');
-		rate += value;
-		
-		this.__engineCall('rate', rate);
+		this.__engineCall('rate', this.__engineCall('rate') + value);
 		return this;
-	}
+	};
 	
 	this.ShiftDown = function(value)
 	{
@@ -236,6 +233,7 @@ function Deck(decknum)
 	this.group = '[Channel' + this.decknum + ']';
 	this.hotcues = [];
 	this.eq = new Equalizer(this);
+	this.rate = new Rate(this);
 	
 	
 	for (var i = 0; i < 32; i++)
@@ -298,8 +296,8 @@ function Deck(decknum)
 	
 	this.Rate = function()
 	{
-		return new Rate(this);
-	}
+		return this.rate;
+	};
 	
 	this.Play = function(value)
 	{

@@ -1,3 +1,35 @@
+/*
+ * The purpose of this object is to create a wrapping API for the engine API
+ * that is chainable.
+ * 
+ * Executing functions with this API usually follows the form of:
+ * 
+ *   Mixxx.Group().Control([value])
+ * 
+ * This is no straight forward mapping though. For example, to set Hotcues
+ * one executes:
+ *   
+ *   Mixxx.Deck(1).Hotcue(5).Set();
+ * 
+ * Since the API is chainable one can execute the following to set various 
+ * different hotcues:
+ * 
+ *   var deck = Mixxx.Deck1();
+ *   for (var i = 0; i < 5; i++)
+ *	 deck.Hotcue(i).Set();
+ * 
+ * To set and goto a Cue at once:
+ * 
+ *   var hotcue = Mixxx.Deck1().Hotcue(0);
+ *   hotcue.Set();
+ *   hotcue.Goto();
+ * 
+ * Or:
+ * 
+ *   Mixxx.Deck(1).Hotcue(0).Set().Goto();
+ * 
+ */
+
 if (typeof exports != 'undefined')
 {
 	var engine = require('./test/engine');
@@ -466,38 +498,6 @@ function Playlist()
 	};
 	
 }
-
-/*
- * The purpose of this object is to create a wrapping API for the engine API
- * that is chainable.
- * 
- * Executing functions with this API usually follows the form of:
- * 
- *   Mixxx.Group().Control([value])
- * 
- * This is no straight forward mapping though. For example, to set Hotcues
- * one executes:
- *   
- *   Mixxx.Deck(1).Hotcue(5).Set();
- * 
- * Since the API is chainable one can execute the following to set various 
- * different hotcues:
- * 
- *   var deck = Mixxx.Deck1();
- *   for (var i = 0; i < 5; i++)
- *	 deck.Hotcue(i).Set();
- * 
- * To set and goto a Cue at once:
- * 
- *   var hotcue = Mixxx.Deck1().Hotcue(0);
- *   hotcue.Set();
- *   hotcue.Goto();
- * 
- * Or:
- * 
- *   Mixxx.Deck(1).Hotcue(0).Set().Goto();
- * 
- */
 
 function MixxxAPI()
 {

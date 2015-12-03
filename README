@@ -1,9 +1,3 @@
-= Mixxx MIDI Engine Emulator =
+= Mixxx API =
 
-Emulate the Mixxx MIDI Scripting Engine. Useful for quickly testing out
-things.
-
-Requirements:
-
-  * xml2js
-  * node-midi
+This is a light weight object based wrapper for Mixxx's engine.* API.

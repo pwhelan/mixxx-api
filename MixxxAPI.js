@@ -322,11 +322,64 @@ function Deck(decknum)
 		return this.deck;
 	};
 	
-	this.Connect = function(control, func)
+	this.GetGroup = function()
 	{
-		engine.connectControl(this.group, control, func);
-	}
+		return this.group;
+	};
 	
+	this.Beatloop = function(beats)
+	{
+		return this.__engineCall('beatloop', beats);
+	};
+	
+	this.Loop = function()
+	{
+		return this.__engineCall('loop_enabled');
+	};
+	
+	this.Quantized = function(fn)
+	{
+		var quantized = this.__engineCall('quantize');
+		
+		if (!quantized) this.__engineCall('quantize', 1);
+		fn();
+		if (!quantized) this.__engineCall('quantize', 0);
+	};
+	
+	this.SlipMode = function(on)
+	{
+		return this.__engineCall('slip_enabled', on);
+	};
+	
+	this.Connect = function(control, func, doTrigger)
+	{
+		var c = engine.connectControl(this.group, control, func, true);
+		if (typeof doTrigger != 'undefined' && doTrigger)
+		{
+			func(engine.getValue(this.group, control));
+		}
+		return c;
+	};
+	
+	this.SoftTakeover = function(controls, enable)
+	{
+		// Implicit allocation .. I know...
+		// -Phillip Whelan
+		if (!Array.isArray(controls))
+		{
+			controls = [controls];
+		}
+		
+		for (var c = 0; c < controls.length; c++)
+		{
+			engine.softTakeover(this.group, controls[c], enable);
+		}
+	};
+	
+	this.PFL = function(status)
+	{
+		return this.__engineCall("pfl", status);
+	};
 }
 
 function Master()
@@ -336,12 +389,17 @@ function Master()
 	this.__engineCall = function(control, value)
 	{
 		return MixxxEngineCall('[Master]', control, value);
-	}
+	};
 	
-	this.Connect = function(control, func)
+	this.Connect = function(control, func, trigger)
 	{
-		engine.connectControl('[Master]', control, func);
-	}
+		var c = engine.connectControl('[Master]', control, func, true);
+		if (typeof trigger != 'undefined' && trigger)
+		{
+			func(engine.getValue(this.group, control));
+		}
+		return c;
+	};
 	
 	this.Balance = function(value)
 	{

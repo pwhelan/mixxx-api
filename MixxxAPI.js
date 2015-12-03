@@ -481,4 +481,7 @@ function MixxxAPI()
 
 var Mixxx = new MixxxAPI();
 
-
+if (typeof exports != 'undefined')
+{
+	exports.Mixxx = Mixxx;
+}

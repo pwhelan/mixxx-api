@@ -463,7 +463,7 @@ function Playlist()
 	this.ScrollTracks = function(value)
 	{
 		return this.__engineCall('SelectTrackKnob', value);
-	};
+	}
 	
 	this.Timeout = function(timeout, fn)
 	{
@@ -693,7 +693,8 @@ function MixxxAPI()
 	var _decks = [new Deck(1), new Deck(2), new Deck(3), new Deck(4)],
 		_midi = new MIDI(),
 		_playlist = new Playlist(),
-		_master = new Master();
+		_master = new Master(),
+		_fx = new FX();
 	
 	
 	this.Deck = function(deck)

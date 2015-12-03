@@ -463,7 +463,7 @@ function Playlist()
 	this.ScrollTracks = function(value)
 	{
 		return this.__engineCall('SelectTrackKnob', value);
-	}
+	};
 	
 }
 
@@ -504,8 +504,7 @@ function MixxxAPI()
 	var _decks = [new Deck(1), new Deck(2), new Deck(3), new Deck(4)],
 		_midi = new MIDI(),
 		_playlist = new Playlist(),
-		_master = new Master(),
-		_fx = new FX();
+		_master = new Master();
 	
 	
 	this.Deck = function(deck)

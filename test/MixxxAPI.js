@@ -87,15 +87,6 @@ Mixxx.Playlist().ScrollTracks();
 
 ///////////////////////////////
 engine.dumpcalls();
-Mixxx.FX().Rack(1).Unit(1).Enabled();
-Mixxx.FX().Rack(1).Unit(1).Enable();
-Mixxx.FX().Rack(1).Unit(1).Disable();
-Mixxx.FX().Rack(1).Unit(2).Master().Disable();
-Mixxx.FX().Rack(1).Unit(3).Headphones().Enable();
-Mixxx.FX().Rack(1).Unit(2).Deck(1).Enabled();
-Mixxx.FX().Rack(1).Unit(2).Deck(2).Disable();
-Mixxx.FX().Rack(1).Unit(4).Fader(1, 0.5);
-Mixxx.FX().Rack(1).Unit(4).Fader(2);
 //console.log(engine.dumpcalls());
 
 ///////////////////////////////

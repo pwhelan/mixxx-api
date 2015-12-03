@@ -499,42 +499,49 @@ function Playlist()
  * 
  */
 
-var TimerFunctions = {};
-
 function MixxxAPI()
 {
+	var _decks = [new Deck(1), new Deck(2), new Deck(3), new Deck(4)],
+		_midi = new MIDI(),
+		_playlist = new Playlist(),
+		_master = new Master(),
+		_fx = new FX();
 	
 	
 	this.Deck = function(deck)
 	{
-		return new Deck(deck);
-	}
+		if (_decks[(deck-1)] === null)
+		{
+			_decks[(deck-1)] = new Deck(deck);
+		}
+		
+		return _decks[(deck-1)];
+	};
 	
-	this.Midi = function()
+	this.MIDI = function()
 	{
-		return new MIDI();
-	}
+		return _midi;
+	};
 	
 	this.Master = function()
 	{
-		return new Master();
-	}
+		return _master;
+	};
 	
 	this.Playlist = function()
 	{
-		return new Playlist();
-	}
+		return _playlist;
+	};
 	
-	this.Timer = function(ctxt, interval, func, args)
+	this.init = function()
 	{
-		var namefunc = "func_".Math.floor(Math.random() * 1000000);
 		
-		TimerFunctions[namefunc] = func;
-		TimerFunctions[namefunc].apply(ctxt, args);
+	};
+	
+	this.shutdown = function()
+	{
 		
-		return engine.beginTimer(interval, 
-				"TimerFunctions[" + namefunc + "]()");
-	}
+	};
 }
 
 var Mixxx = new MixxxAPI();
